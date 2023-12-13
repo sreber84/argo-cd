@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    chains.tekton.dev/signed: 'true'
+  name: pipeline-1-run-4
+  labels:
+    tekton.dev/pipeline: pipeline-1
+spec:
+  pipelineRef:
+    name: pipeline-1
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    finally: 20s
+    pipeline: 10m0s
+    tasks: 7m0s
+  workspaces:
+    - emptyDir: {}
+      name: workspace

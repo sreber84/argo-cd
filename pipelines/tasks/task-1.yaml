@@ -1,0 +1,59 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: task-1
+spec:
+  params:
+    - default: foo
+      description: the context dir within source
+      name: contextDir
+      type: string
+    - default: ''
+      description: the fully qualified image name
+      name: destinationImage
+      type: string
+    - default: 'false'
+      description: >-
+        defines if http.sslVerify should be set to true or false in the global
+        git config
+      name: sslVerify
+      type: string
+    - default: vfs
+      description: Use storage driver type vfs if you are running on OpenShift.
+      name: storageDriver
+      type: string
+  steps:
+    - computeResources: {}
+      image: 'registry.fedoraproject.org/fedora:latest'
+      name: step-1
+      script: |
+        #!/usr/bin/env bash
+        sleep 60
+    - computeResources: {}
+      env:
+        - name: user.home
+          value: /home/tekton
+      image: 'registry.fedoraproject.org/fedora:latest'
+      name: step-2
+      script: |
+        #!/usr/bin/env bash
+        sleep 60
+      workingDir: /workspace/source/$(params.contextDir)
+    - computeResources: {}
+      env:
+        - name: DESTINATION_IMAGE
+          value: $(params.destinationImage)
+        - name: STORAGE_DRIVER
+          value: $(params.storageDriver)
+      image: 'registry.fedoraproject.org/fedora:latest'
+      name: step-3
+      script: |
+        #!/usr/bin/env bash
+        sleep 60
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibc
+      workingDir: /workspace/source/$(params.contextDir)
+  volumes:
+    - emptyDir: {}
+      name: varlibc
