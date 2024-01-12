@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-restapi
+  namespace: project-backend
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  selector:
+    app: go-restapi
+  ports:
+    - name: go-lang
+      port: 8080
+      targetPort: 8080
