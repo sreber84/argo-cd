@@ -12,9 +12,11 @@ spec:
     - name: go-lang
       port: 8080
       targetPort: 8080
-    - name: test
+    - name: test-udp
+      port: 9443
+      protocol: UDP
+      targetPort: 9443
+    - name: test-tcp
+      protocol: TCP
       port: 9443
       targetPort: 9443
-    - name: foo
-      port: 8443
-      targetPort: 8443
